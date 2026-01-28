@@ -26,6 +26,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from enum import Enum
+import traceback
 
 import requests
 try:
@@ -1770,14 +1771,17 @@ class NotificationService:
         except smtplib.SMTPAuthenticationError:
             logger.error("邮件发送失败：认证错误，请检查邮箱和授权码是否正确")
             logger.debug(traceback.format_exc())
+            traceback.print_exc()
             return False
         except smtplib.SMTPConnectError as e:
             logger.error(f"邮件发送失败：无法连接 SMTP 服务器 - {e}")
             logger.debug(traceback.format_exc())
+            traceback.print_exc()
             return False
         except Exception as e:
             logger.error(f"发送邮件失败: {e}")
             logger.debug(traceback.format_exc())
+            traceback.print_exc()
             return False
     
     def _markdown_to_html(self, markdown_text: str) -> str:
